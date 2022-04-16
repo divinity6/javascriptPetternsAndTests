@@ -6,6 +6,7 @@
  *        ( 이런건 LINQ 효율에 길든 C# 개발자나 짤법한 코드... )
  */
 window.addEventListener( 'load' , function(){
+    title( 'Object 형태로 데이터가 들어온 경우-최악의 방법' );
     var objectData = [
             { x : 10 , y : 130 },
             { x : 100 , y : 60 },

@@ -2,6 +2,7 @@
  *      1. 일반적인 배열 형태의 데이터
  */
 window.addEventListener( 'load' , function(){
+    title( '일반적인 형태의 데이터' );
     var arrayData = [
             [ 10 , 130 ],
             [ 100 , 60 ],

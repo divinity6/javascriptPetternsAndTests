@@ -11,6 +11,7 @@
  *            함수에 따로 코딩을 안해도 인자, 반환값을 확인하게 해주는 장치
  */
 window.addEventListener( 'load' , function(){
+    title('외부 객체에서 값을 참조');
     rj3.svg.samples = {};
     // samples 의 기본 basedLine에 generator 할당
     rj3.svg.samples.functionBasedLine = function functionBasedLine(){
@@ -43,7 +44,7 @@ window.addEventListener( 'load' , function(){
     ( function(){
         /**
          * - yearlyPriceGrapher 객체로 묶어둔 이유는
-         *   오버라이딩 한 곳에서 this 를 사용할 수 있게
+         *   오버로딩 한 곳에서 this 를 사용할 수 있게
          *   ( data 를 가공할 수 있게 )
          *   묶어둔 거구나...
          *
