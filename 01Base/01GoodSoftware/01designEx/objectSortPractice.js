@@ -34,7 +34,6 @@ const inputSet = () => {
             prevValue = '';
         }
     } );
-    debugger;
 }
 
 inputSet();
