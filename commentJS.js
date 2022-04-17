@@ -6,10 +6,7 @@
  */
 
 ( function( factory ){
-    if ( window.title !== undefined ){
-        return false;
-    }
-    window.title = factory;
+    window.title = window.title || factory;
 }( function(){
 
    var title = /* pure */function(){
