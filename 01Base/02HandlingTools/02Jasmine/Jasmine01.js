@@ -1,24 +1,72 @@
 /**
  *          ===== 재스민 =====
  *
- *      - 재스민 : 행위 주도 개발( Behavior-Driven-Development, BDD )
+ *      - 개요 : 행위 주도 개발( Behavior-Driven-Development, BDD )
  *      --> 자신이 작성중인 코드가 '무엇'을 해야하는지 테스트 코드에 표현 가능
+ *         ( '어떻게' 해야할 지가 아니라 '무엇'을 해야할지 정의 )
+ */
+
+/**
+ *      -------> 간단한 재스민( jasmine ) 소개
+ *
+ *                    ===== describe =====
+ *      - 개요 : 테스트 꾸러미 전역함수
+ *      ---------------------------------------------------------------
+ *      @param                  - 문자열 : 무엇을 테스트할지 서술,
+ *                                함수  : 테스트 꾸러미 구현부
+ *
+ *      ---------------------------------------------------------------
  *
  *
- *      - 간단한 재스민( jasmine ) 소개
- *      --> describe :: 테스트 꾸러미 전역함수
- *          @param : ( 문자열 : 무엇을 테스트할지 서술,
- *                       함수  : 테스트 꾸러미 구현부 );
+ *                    ===== it =====
+ *      - 개요 : 개별 테스트 전역함수
+ *      ---------------------------------------------------------------
+ *      @param                  - 문자열 : 무엇을 테스트할지 서술,
+ *                                함수  : 한개의 기대식( expectation )을 가진함수
+ *                                       코드 상태의 true/false 를 확인하는 단언
  *
- *      --> it :: 개별 테스트 전역함수
- *          @param : ( 문자열 : 무엇을 테스트할지 서술,
- *                     함수  : 한개의 기대식( expectation )을 가진함수
- *                            코드 상태의 true/false 를 확인하는 단언 );
+ *      ---------------------------------------------------------------
  *
- *      --> 전체 테스트가 공유할 설정과 정리코드를 담아두는 함수
- *          beforeEach/afterEach( 테스트 꾸러미가 실행되기 전/후 에 호출 )
+ *                    ===== beforeEach/afterEach =====
+ *
+ *      - 개요 : 전체 테스트가 공유할 설정과 정리코드를 담아두는 함수
+ *          ( 테스트 꾸러미가 실행되기 전/후 에 호출 )
+ *
+ *      ---------------------------------------------------------------
+ *      @param                  - it( 테스트 ) 가 실행되기 전/후 에
+ *                                각각 호출될 함수
+ *      ---------------------------------------------------------------
+ *
+ *
+ *      ===============================================================
+ *                          - 재스민 매쳐( matcher )
+ *      ===============================================================
+ *
+ *                    ===== expect =====
+ *
+ *     - 개요 : 대상코드가 낸 실제값( testReservation.passengerInformation )
+ *             을 기댓값( testPassenger )과 비교
+ *             ( 하나라도 실패하면 실패로 간주 )
+ *      ---------------------------------------------------------------
+ *      @param           - 실제값( testReservation.passengerInformation )
+ *
+ *      @return          - Expectation 객체
+ *      ---------------------------------------------------------------
+ *
+ *
+ *                    ===== toBe =====
+ *
+ *      - 개요 : expect 객체의 파라미터 값과 비교
+ *      ---------------------------------------------------------------
+ *      @param           - 기댓값( testPassenger )
+ *
+ *      @return          - undefined
+ *      ---------------------------------------------------------------
+ *
+ *      ------> 용도에 맞는 내장함수가 없으면 커스텀 매쳐를 만들어 쓸수 있도록 지원함.
  *
  */
+title( '일부러 Error 던진거에요~ 무서워 말아용' );
 title( 'reservation 전역으로 사용' );
 function createReservation( passenger , flight ){
     return {
@@ -44,7 +92,7 @@ function createReservation( passenger , flight ){
          */
         beforeEach( function(){
             testPassenger = {
-                firsetName : '윤지',
+                firstName : '윤지',
                 lastName : '김,'
             };
 
@@ -59,6 +107,7 @@ function createReservation( passenger , flight ){
         });
 
         it( 'passenger 를 passengerInformation 프로퍼티에 할당한다' , function(){
+            // 표현식 결과가 성공하면 true
             expect( testReservation.passengerInformation ).toBe( testPassenger );
             // :: true
         } );
@@ -69,23 +118,6 @@ function createReservation( passenger , flight ){
         debugger;
     });
 }
-/**
- *               ===== 재스민 매쳐( matcher ) =====
- *
- *      - expect :: 대상코드가 낸 실제값( testReservation.passengerInformation )
- *                  을 기댓값( testPassenger )과 비교
- *                  ( 하나라도 실패하면 실패로 간주 )
- *
- *        @param : 실제값( testReservation.passengerInformation )
- *        @return : Expectation 객체
- *
- *      - toBe : expect 객체의 파라미터 값과 비교
- *
- *        @param : 기댓값( testPassenger )
- *        @return : undefined
- *
- *      ------> 용도에 맞는 내장함수가 없으면 커스텀 매쳐를 만들어 쓸수 있도록 지원함.
- */
 
 /**
  *               ===== 재스민 스파이( spy ) =====
@@ -118,10 +150,14 @@ function createReservation( passenger , flight ){
  *            이것은 단위 테스트와 구별되는 별개의 테스트임.
  *
  *
- *      -- 75p 오늘은 여기까지, 다음에 이어서...
  */
 title( '동료가 작성한 saveReservation 함수' );
 function ReservationSaver(){
+    /**
+     * - createReservation 를 호출하기전에
+     *   saveReservation 함수에 스파이를 심음
+     *   spy 함수로 실행 여부를 알 수 있음
+     */
     this.saveReservation = function( reservation ){
         // 예약 정보를 저장하는 웹 서비스와 연동하는 복잡한 코드가 있을 것이다.
     }
@@ -134,7 +170,7 @@ function ReservationSaver(){
 
         beforeEach( function(){
             testPassenger = {
-                firsetName : '윤지',
+                firstName : '윤지',
                 lastName : '김,'
             };
 
@@ -149,11 +185,17 @@ function ReservationSaver(){
         });
 
         it( '예약정보를 저장한다' , function (){
-            var saver = new ReservationSaver();
 
+            var saver = new ReservationSaver();
+            spyOn( saver , 'saveReservation' );
             // testPassenger 와 testFlight 는 이 테스트 꾸러미의
             // beforeEach 함수에서 이미 설정되어 있다고 본다
             createReservation( testPassenger , testFlight , saver );
+
+            // saveReservation 이 정말 호출되었는지 어떻게 알 수 있을까?
+            // 스파이는 함수를 호출한 시점과 전달한 인자까지 포착함
+            expect( saver.saveReservation ).toHaveBeenCalled();
+            debugger;
         })
     } )
 
