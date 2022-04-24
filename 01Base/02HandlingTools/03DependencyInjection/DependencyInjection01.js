@@ -2,6 +2,12 @@
  *          ===== 의존성 주입 =====
  *
  *      - 개요 : 좌석 예약 기능을 갖춘 클라이언트 코드 개발
+ *              ( 좌석 예약 기능 구현 )
+ *
+ *      - 구현 : 1 인당 세션을 10 개까지 등록가능,
+ *              참가자가 한 세션을 등록하면 결과를 성공/실패 메시지로
+ *              화면에 표시하는 함수를 개발해야 함.
+ *
  *      --> 서비스 캡슐화 객체 : ConferenceWebSvc
  *          ( 캡슐화 : 객체의 속성, 행위를 하나로 묶고 실제 구현 내용을 내부에 은닉 )
  *      --> 화면에 표시할 스크립트 객체 : Messenger
@@ -42,7 +48,7 @@ title( '기본 Attendee 객체' );
             /**
              *  - 이렇게 맨 앞줄에서 테스트 코드를 작성하는 구나...
              */
-            if (this.service.reserve(this.attendeeId, sessionId)) {
+            if ( this.service.reserve( this.attendeeId, sessionId ) ) {
                 this.messenger.success('좌석 예약이 완료되었습니다!' +
                     '고객님은' + this.service.getRemainingReservations() +
                     '좌석을 추가 예약하실 수 있습니다.');

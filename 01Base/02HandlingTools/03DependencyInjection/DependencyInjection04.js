@@ -88,6 +88,7 @@ title( '일부러 Error 던진거에요~ 무서워 말아용' );
             } );
         } );
 
+        title( 'get 함수에서 미등록 성명인지 확인' );
         describe( 'get(name)' , function (){
             it( '성명이 등록되어 있지 않으면 undefined 를 반환한다' , function(){
                 expect( container.get('noDefined') ).toBeUndefined();

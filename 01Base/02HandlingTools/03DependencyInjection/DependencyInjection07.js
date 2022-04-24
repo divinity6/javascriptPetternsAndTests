@@ -79,6 +79,8 @@
     try {
         var attendeeId2 = 123,
             sessionId2 = 1;
+
+        // DI 컨테이너에섯 attendeeId 를 넘겨 Attendee 를 인스턴스화 한다.
         var attendee = MyApp.diContainer.get( 'Attendee' )( attendeeId2 );
         attendee.reserve( sessionId2 );
     }
@@ -92,4 +94,9 @@
  *      Attendee 는 service , messenger 외에 attendeeId 를 추가로 필요로 한다
  *
  *  ----> 따라서, 어디서든 attendeeId 를 주입받아 사용할 수 있게 하기위함...
+ *
+ *  ----> factory 함수로 한번 더 감싸지 않으면 재귀적 호출( 의존성 객체들 때문에... )
+ *        attendeeId 가 소실되기 때문,
+ *        또한 어디어디서든 get( 'Attendee' )( attendeeId )
+ *        형태로 호출할 수 있기 때문이다!!
  */
