@@ -20,13 +20,13 @@ title( '기본 Attendee 객체' );
  */
 {
     try {
-        var Attendee = function (attendeeId) {
+        var Attendee = function ( attendeeId ) {
             // 'new' 로 생성하도록 강제한다
             /**
              *  - 이런 방법으로 검사할 수 있구나...
              */
             if (!(this instanceof Attendee)) {
-                return new Attendee(attendeeId);
+                return new Attendee( attendeeId );
             }
 
             this.attendeeId = attendeeId;
@@ -38,7 +38,7 @@ title( '기본 Attendee 객체' );
 
         // 주어진 세션에 좌석 예약을 시도한다
         // 성공 / 실패 여부를 메시지로 알려준다
-        Attendee.prototype.reserve = function (sessionId) {
+        Attendee.prototype.reserve = function ( sessionId ) {
             /**
              *  - 이렇게 맨 앞줄에서 테스트 코드를 작성하는 구나...
              */

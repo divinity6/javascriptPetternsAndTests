@@ -1,32 +1,30 @@
 /**
- *  - register 함수만으로는 의존성을 끌어낼 방법이 없어 컨테이너에 의존성이
- *    잘 들어갔는지 확인이 어려움.
+ *  - register 에서 이름으로 기능들을 등록하고,
+ *  --> get 에서 등록된 기능들을 가져와 실행하는구나
  *
- *  - 따라서, get 함수 작성.
+ *  - 와 진짜 container 는 등록하고, 값을 조회하는 기능만 실천하네...
+ *    ( 말그대로 container... )
  *
- *  - 명심할 것 : 코드가 전혀 없어도 되니 테스트를 성공시킬 최소한의 코드만 작성해야함!!
- *              ( 코드가 테스트보다 앞서나가면 안된다 !! )
  *
- *  - 아... 변수명이나 코드만 봐도 뭘하려는건지 알 수 있게, + DRY 하게 코드를짜야해...
+ *  --> 실제 내부에서 실행해야할 로직들은 젠부 외부에서 주입받아 실행함..
+ *      ( 이것이 주입... )
  *
+ *  ===== 의존성 등록 테스트!! =====
  */
 title( '일부러 Error 던진거에요~ 무서워 말아용' );
 {
-    title( 'get 함수에서 미등록 성명인지 확인' );
-
+    title( '등록된 함수를 DiContainer.get 으로 조회' );
     var DiContainer = function (){
         // 반드시 생성자로 객체를 생성하게 한다
         if ( !( this instanceof DiContainer) ){
             return new DiContainer();
         }
+
+        // 내부 프로퍼티에 등록 배열 설정( 초기화 )
+        this.registrations = [];
     };
 
     // 에러났을 경우 발생할 메시지
-    /**
-     * - 내부 함수로 설정해둔게 아니라
-     *   prototype 에 넣어두었기 때문에
-     *   외부로 표출된다.
-     */
     DiContainer.prototype.messages = {
         registerRequiresArgs : '이 생성자 함수는 인자가 3개 있어야 합니다' +
                                 '문자열 , 문자열 배열 , 함수',
@@ -46,9 +44,18 @@ title( '일부러 Error 던진거에요~ 무서워 말아용' );
                 throw new Error( this.messages.registerRequiresArgs );
             }
         }
+        // 내부 프로퍼티에 등록하는 함수 설정
+        this.registrations[ name ] = { func : func };
     };
-    title( '최소한의 DiContainer.get 함수 코드' );
+    title( '의존성을 제공하는 get 메서드' );
     DiContainer.prototype.get = function ( name ){
+        var registration = this.registrations[ name ];
+
+        if ( registration === undefined ){
+            return undefined;
+        }
+        // 등록된 기능 실행
+        return this.registrations[ name ].func();
     }
 
     describe( 'DiContainer' , function(){
@@ -79,34 +86,65 @@ title( '일부러 Error 던진거에요~ 무서워 말아용' );
 
                 badArgs.forEach( function( args ){
                     expect( function(){
-                        /**
-                         *  - 아 배열을 그대로 전달하려고 apply 를 사용했구나...
-                         */
                         container.register.apply( container , args );
                     } ).toThrowError( container.messages.registerRequiresArgs );
                 } );
             } );
         } );
 
-        describe( 'get(name)' , function (){
+        describe( 'get( name )' , function(){
             it( '성명이 등록되어 있지 않으면 undefined 를 반환한다' , function(){
                 expect( container.get('noDefined') ).toBeUndefined();
             } );
 
             it( '등록된 함수를 실행한 결과를 반환한다' , function(){
-                /**
-                 * - 좋은 코드는 주석없이 코드만 보아도 뭘하려는지 금방 알 수 있다
-                 *   ( 자기 서술적 코드 ( self-documenting ) )
-                 */
                 var name = 'MyName',
                     returnFromRegisteredFunction = 'something';
 
                 container.register( name , [] , function(){
                     return returnFromRegisteredFunction;
                 } );
-
                 expect( container.get( name ) ).toBe( returnFromRegisteredFunction );
 
+            } );
+
+            it( '등록된 객체에 의존성을 제공한다' , function(){
+                var main = 'main',
+                    mainFunc,
+                    // dep 애네들을 의존성 객체로 본걸로 보임
+                    dep1 = 'dep1',
+                    dep2 = 'dep2';
+
+                /**
+                 *  - 즉, main 이 하고싶은 일은 dep1 과 dep2 를 더하여
+                 *    값을 출력하고 싶은거로군...
+                 *
+                 *  --> 그리고 dep1 과 dep2 는 의존성을 제공하여 넘겨주고....
+                 */
+                container.register( main , [ dep1 , dep2 ] , function( dep1Func , dep2Func ){
+                    return function(){
+                        return dep1Func() + dep2Func();
+                    };
+                } );
+
+
+                // 의존성 등록
+                container.register( dep1 , [] , function(){
+                    return function(){
+                        return 1;
+                    };
+                } );
+
+                container.register( dep2 , [] , function(){
+                    return function(){
+                        return 2;
+                    };
+                } );
+
+                mainFunc = container.get( main );
+                console.log( container.registrations );
+                debugger;
+                expect( mainFunc() ).toBe( 3 );
             } );
 
         } );
@@ -114,13 +152,11 @@ title( '일부러 Error 던진거에요~ 무서워 말아용' );
 }
 
 /**
- *  - 작성한 테스트가 우연히 성공하는 테스트는 괜찮음.
- *  --> 앞으로 어떤 테스트를 해야할지 명확히 알고 있으면 상황은 저절로 잡힘.
+ *      - 진짜 보고 느낀건 container 메소드는 감싼역할...
+ *      --> 조회하고 값을 내보내고 약간 CRUD 개념을 가진 함수로 보임
  *
- *  - 위의 코드에서 returnFromRegisteredFunction 변수를 통해
- *    코드를 DRY 하게 유지했다...
+ *      --> 비즈니스 로직 처리는 전부 주입받아서 처리( 파라미터로 넘겨받아서... )
  *
- *  - 와, 근데 보면 볼수록 느끼는건데 결괏값을 받을 함수마저 외부에서 자꾸넘겨주는
- *    형태( 의존성 주입 )로 완전 나눠놨구나...
- *
+ *      --> 그리고 비즈니스로직을 처리하는데 있어 필요한 파라미터도 전부 의존성으로
+ *          넘겨받아서 처리해버리네...ㅋㅋㅋ
  */

@@ -22,7 +22,7 @@ title( '일부러 Error 던진거에요~ 무서워 말아용' );
      *          --> 인젝터블과 의존성등록, 요청시 객체를 내어주는 두가지일을 함.
      *              ( register 함수부터 코딩 )
      *
-     *  - 인젝터블 명
+     *  - 인젝터블( injectable :: 주입가능한... ) 명
      *
      *  - 의존성 명을 담은 배열
      *
@@ -40,7 +40,7 @@ title( '일부러 Error 던진거에요~ 무서워 말아용' );
      *      ---------------------------------------------------------------
      */
 
-    // register 는 DiContainer 의 인스턴스가 모두 공유하는 자원
+    // register 는 DiContainer 의 인스턴스가 모두 공유
     // ( 따라서 prototype 에 작성 )
     var DiContainer = function (){};
     DiContainer.prototype.register = function ( name , dependencies , func ){
