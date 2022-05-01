@@ -16,9 +16,6 @@
  *      - AOP 프레임 워크로 개발하면 원본 코드를 하나도 건드리지 않은채
  *        어플리케이션 시동 로직에 코드를 넣을 수 있음.
  *
- *      =======================================================================
- *                          오케이 오늘은 여기까지( 96p )
- *      =======================================================================
  */
 title( 'AOP 없는 캐싱' );
 {
@@ -37,6 +34,9 @@ title( 'AOP 없는 캐싱' );
             getSuggestedTicket : function( homeAirport ){ // Suggested :: 제안된
                 var ticket;
 
+                /**
+                 *  - 이미 존재하면 기존것을 반환하네
+                 */
                 if ( cache[ homeAirport ] ){
                     return cache[ homeAirport ];
                 }
@@ -45,6 +45,9 @@ title( 'AOP 없는 캐싱' );
                     homeAirport , conferenceAirport ,
                     maxArrival , minDeparture );
 
+                /**
+                 *  - 여기 cache 안에 저장해놓는구나
+                 */
                 cache[ homeAirport ] = ticket;
 
                 return ticket;
@@ -70,6 +73,4 @@ title( 'AOP 없는 캐싱' );
 }
 /**
  *      - 아직까지는 AOP 개념이 감이 잘 안잡히고 아리송하네용...?
- *
- *
  */

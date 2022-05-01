@@ -20,6 +20,11 @@ DiContainer.prototype.messages = {
     registerRequiresArgs : '이 생성자 함수는 인자가 3개 있어야 합니다' +
                             '문자열 , 문자열 배열 , 함수',
 };
+
+/**
+ *  - 여기서 인자로 name 을 받는 이유중 하나가, 물론 프로퍼티에 저장하려고하는 것도 있지만
+ *    그 name 으로 해당 함수를 찾으려고하는것
+ */
 DiContainer.prototype.register = function ( name , dependencies , func ){
     var ix;
 
@@ -52,6 +57,11 @@ DiContainer.prototype.get = function ( name ){
     registration.dependencies.forEach( function( dependencyName ){
         // 여기서 재귀적으로 호출하는 이유가 있었네...
         // 의존성 애들을 여기서 설정하려고...
+        /**
+         * - 보통 이런건 분리해서 사용하는데, 같은함수를 사용해보리네...
+         * --> 와 진짜 머리를 개잘써야하네...ㅋㅋ
+         *     ( 그 의존성의 의존성을 넣을 수 있으니깐... )
+         */
         var dependency = self.get( dependencyName );
         dependencies.push( dependency === undefined ? undefined : dependency );
     } );
