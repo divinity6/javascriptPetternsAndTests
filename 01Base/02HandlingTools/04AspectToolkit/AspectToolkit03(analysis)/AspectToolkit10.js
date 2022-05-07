@@ -92,6 +92,6 @@ title( 'Aop.next 의 테스트' );
 /**
  *      - 테스트를 모아놓고 보니 깔끔하네...
  *
- *      --> 여기에서 AspectToolkit( main )을 한번다시 재탐색해보자
+ *      --> 여기에서 AspectToolkit( main )의 하단부분 주석을 다시 읽어보자!!
  *
  */
