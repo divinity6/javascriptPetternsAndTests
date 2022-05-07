@@ -82,7 +82,7 @@ title( '애스팩트의 다계층 사용이 가능한지 확인' );
      *         advice 함수로 사용한다.
      *
      *      2-1. 내부 프로퍼티인 originalFn 에
-     *           ( 38번째 줄 ) return function( targetInfo ){ ... }를 할당한다
+     *           ( 13번째 줄 ) return function( targetInfo ){ ... }를 할당한다
      *
      *      2-2. targetObj.targetFn 에
      *           ( 13번째 줄 ) fnObj[ fnName ] = function(){ ... }를 할당한다.
@@ -94,7 +94,7 @@ title( '애스팩트의 다계층 사용이 가능한지 확인' );
      *
      *      3-2. 이때,  advice 함수의 파라미터 targetInfo 는
      *           2-1. 에서 설정한 originalFn  이므로
-     *           ( 38번째 줄 ) return function( targetInfo ){ ... } 가 된다
+     *           ( 13번째 줄 ) fnObj[ fnName ] = function(){ ... } 가 된다
      *
      *      3-2-1. 내부 코드인 executionPoints.push( 'wrappingAdvice - 처음 ' + '바깥쪽' );
      *             을 실행한다
@@ -103,9 +103,8 @@ title( '애스팩트의 다계층 사용이 가능한지 확인' );
      *      3-2-2. 내부 코드인 targetInfo.fn(); 을 실행한다
      *
      *      3-2-2-1. targetInfo.fn(); 는  2-1. 에서 설정한 originalFn 이므로
-     *               adviceID : '안쪽' 인
-     *               ( 38번째 줄 ) return function( targetInfo ){ ... }
-     *               함수가 실행된다
+     *               ( 13번째 줄 ) fnObj[ fnName ] = function(){ ... } 가 되며
+     *                           adviceID : '안쪽' 인 advice 함수가 실행된다
      *
      *      3-2-2-2. 내부 코드인 executionPoints.push( 'wrappingAdvice - 처음 ' + '안쪽' );
      *               을 실행한다
