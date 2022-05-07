@@ -75,6 +75,10 @@ title( 'AOP 없는 캐싱' );
     /**
      *  - getSuggestedTicket 에서 주변환경을 이용하기 위해서
      *    즉시실행 함수를 썻구낭...!!
+     *
+     *  --> 일반 객체를 이용하면 private 한 값들을
+     *      일반 프로퍼티로 넣어야 하기 때문에, 내부 private 값들을
+     *      지정하기 위해 즉시실행함수의 클로저를 이용했네
      */
     var TravelService = ( function( rawWebService ){
         var conferenceAirport = 'BOS';
