@@ -16,7 +16,7 @@ title( 'chimp 객체' );
      * - 첫 번째 파라미터는 __proto__ 로 사용할 값
      *
      * - 두 번째 파라미터는 defineProperty 로 선언한
-     *   추가할 피로퍼티들
+     *   새로 맨들( 추가할 ) 프로퍼티 들
      */
     var ape = Object.create( primate , {
         hasThumbs : { value : true },
