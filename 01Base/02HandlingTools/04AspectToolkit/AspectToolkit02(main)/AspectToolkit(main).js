@@ -45,7 +45,9 @@ title( 'AOP.js' );
         around : function( pointcut , advice , namespaces ){
             // 이름 공간이 없으면 전역 이름공간을 찾아내는 꼼수를 쓴다
             if ( namespaces === undefined || namespaces.length === 0 ){
-                namespaces = [ ( function(){ return this; }.call() ) ];
+                namespaces = [ ( function(){
+                    return this;
+                }.call() ) ];
             }
             // 이름 공간( namespace )을 전부 순회한다
             for ( var i in namespaces ){

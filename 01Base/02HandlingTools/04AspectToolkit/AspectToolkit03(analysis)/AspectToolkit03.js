@@ -36,6 +36,7 @@ title( 'Aop.around 가 advice 를 실행' );
 
         describe( 'Aop.around( fnName , advice , targetObj )' , function(){
             it( '어드바이스가 타깃 호출을 래핑한다' , function(){
+
                 var wrappingAdvice = function( targetInfo ){
                     executionPoints.push( 'wrappingAdvice - 처음' );
                     targetInfo.fn();
@@ -43,7 +44,9 @@ title( 'Aop.around 가 advice 를 실행' );
                 };
 
                 Aop.around( 'targetFn' , wrappingAdvice , targetObj );
+
                 targetObj.targetFn();
+
                 expect( executionPoints ).toEqual(
                     [ 'wrappingAdvice - 처음' , 'targetFn' , 'wrappingAdvice - 끝' ] );
             } );

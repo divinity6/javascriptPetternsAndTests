@@ -25,6 +25,8 @@ DiContainer.prototype.messages = {
  *  - 여기서 인자로 name 을 받는 이유중 하나가, 물론 프로퍼티에 저장하려고하는 것도 있지만
  *    그 name 으로 해당 함수를 찾으려고하는것
  */
+
+// func 가 구현체구나
 DiContainer.prototype.register = function ( name , dependencies , func ){
     var ix;
 
